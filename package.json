@@ -37,6 +37,9 @@
 		"vitest": "^2.0.4"
 	},
 	"dependencies": {
-		"@tailwindcss/typography": "^0.5.15"
+		"@tailwindcss/typography": "^0.5.15",
+		"@tauri-apps/api": "^2.2.0",
+		"@tauri-apps/plugin-os": "^2.2.0",
+		"svelte-persisted-store": "^0.12.0"
 	}
 }

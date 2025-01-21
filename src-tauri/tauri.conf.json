@@ -1,27 +1,28 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "shadcn-svelte-tauri-template",
-  "version": "0.1.0",
+  "productName": "App",
+  "version": "0.0.0",
   "identifier": "com.tauri.dev",
   "build": {
     "frontendDist": "../build",
     "devUrl": "http://localhost:5173",
-    "beforeDevCommand": "pnpm dev",
-    "beforeBuildCommand": "pnpm build"
+    "beforeDevCommand": "pnpm run dev",
+    "beforeBuildCommand": "pnpm run build"
   },
   "app": {
-    "withGlobalTauri": true,
     "windows": [
       {
-        "fullscreen": false,
+        "title": "",
+        "minWidth": 850,
+        "minHeight": 700,
         "resizable": true,
-        "width": 600,
-        "height": 400,
-        "titleBarStyle": "Transparent",
-        "hiddenTitle": true,
-        "decorations": false
+        "fullscreen": false,
+        "maximized": true,
+        "decorations": false,
+        "transparent": true
       }
     ],
+    "macOSPrivateApi": true,
     "security": {
       "csp": null
     }
