@@ -4,11 +4,18 @@
 	import '../app.css';
 	import { getCurrentWindow } from "@tauri-apps/api/window";
 	import { appMaximized, appWidth, leftSideBarSheet, leftSideBarWidth, leftSideBarWidthBeforeCollapse, MIDBREAKPOINTPX } from '$lib/global-store';
-	import * as Sheet from "$lib/components/ui/sheet/index.js";
 	import { slide } from 'svelte/transition';
+
+
+    import * as Sheet from "$lib/components/ui/sheet/index.js";
 	import TitleBarRoot from '$lib/components/ui/title-bar/title-bar-root.svelte';
   
+    import { ModeWatcher } from "mode-watcher";
     
+
+
+
+
     let { children } = $props();
 
     let isDragging = $state(false);
@@ -90,8 +97,9 @@
         }
     });
 
-    const children_render = $derived(children);
 </script>
+
+<ModeWatcher defaultMode="dark" />
 
 <div class="flex h-screen flex-col overflow-hidden" id="main-area">
     <TitleBarRoot />
@@ -124,6 +132,7 @@
             </Sheet.Content>
         </Sheet.Root>
 
+        <!--Main Contents-->
         <main class={cn("my-1.5 flex flex-1 rounded-sm border bg-accent/20 md:mr-1.5 overflow-hidden", isDragging ? "select-none" : "")}>
             {@render children()}
         </main>

@@ -18,6 +18,6 @@
 
 </script>
 
-<Button variant="ghost" class="{cn("py-0 px-2 text-muted-foreground ")}"   onclick={handleClick}>
-	<Square size="20"/>
-</Button>
+<button class="{cn("text-muted-foreground hover:bg-accent h-full px-5 ")}"   onclick={handleClick}>
+	<Square size="12"/>
+</button>
