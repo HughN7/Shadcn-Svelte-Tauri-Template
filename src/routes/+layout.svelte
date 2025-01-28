@@ -53,16 +53,14 @@
     <TitleBarRoot />
 
     <!--Everything under the title bar-->
-    <div class={cn("flex flex-row h-[calc(100vh-48px)] overflow-hidden bg-background")}>
+    <div class={cn("flex flex-row h-[calc(100vh-48px)] overflow-hidden bg-background")} style="-webkit-app-region: no-drag;">
        
         <!--Left Sidebar, needs to be kept here-->
         <LeftSidebarRoot/>
 
         <!--Main Contents-->
-        <main class={cn("my-1.5 flex flex-1 rounded-sm border bg-accent/20 md:mr-1.5 overflow-hidden", $leftSideBarHandleDrag ? "select-none" : "")}>
+        <main class={cn("mt-2 mb-[8px] flex flex-1 rounded-sm border bg-accent/20 md:mr-[9px] overflow-hidden", $leftSideBarHandleDrag ? "select-none" : "")}>
             {@render children()}
         </main>
     </div>
 </div>
-
-

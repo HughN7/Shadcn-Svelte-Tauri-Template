@@ -66,7 +66,7 @@
 </script>
 
 <div
-	class={cn('grid h-12 max-h-12 w-full grid-cols-3 grid-rows-1 items-center justify-between px-4 bg-accent/20')}
+	class={cn('grid h-12 max-h-12 w-full grid-cols-3 grid-rows-1 items-center justify-between px-4 bg-transparent')}
 	style="backdrop-filter: blur(20px)"
 	data-tauri-drag-region
 >
