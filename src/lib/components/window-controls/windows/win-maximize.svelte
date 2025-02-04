@@ -18,6 +18,6 @@
 
 </script>
 
-<button class="{cn("text-muted-foreground hover:bg-accent h-full px-5 ")}"   onclick={handleClick}>
+<button class="{cn("text-muted-foreground transition-all duration-200 hover:bg-accent h-full mt-1 pb-1 px-5")}" onclick={handleClick}>
 	<Square size="12"/>
 </button>

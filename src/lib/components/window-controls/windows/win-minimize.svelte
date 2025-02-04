@@ -6,6 +6,6 @@
     import { cn } from '$lib/utils';
 </script>
 
-<Button variant="ghost" class="{cn("py-0 px-2 text-muted-foreground")}" onclick={async () => { await appWindow.minimize() }}  >
-    <Minus/>
-</Button>
+<button class="{cn("text-muted-foreground transition-all duration-200 hover:bg-accent h-full mt-1 pb-1 px-5")}" onclick={async () => { await appWindow.minimize() }}  >
+    <Minus size="15"/>
+</button>

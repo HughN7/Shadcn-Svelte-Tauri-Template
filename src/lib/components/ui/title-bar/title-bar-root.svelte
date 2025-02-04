@@ -72,8 +72,7 @@
 </script>
 
 <div
-	class={cn('grid h-12 max-h-12 w-full grid-cols-3 grid-rows-1 items-center justify-between px-4')}
-	style="backdrop-filter: blur(20px)"
+	class={cn('grid h-12 max-h-12 w-full grid-cols-3 grid-rows-1 items-center justify-between', platform() === 'macos' ? 'px-3' : 'pl-3')}
 	data-tauri-drag-region
 >
 	<!-- Left Section -->
