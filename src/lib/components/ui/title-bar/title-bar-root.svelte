@@ -1,48 +1,46 @@
 <script lang="ts">
-	import { twJoin } from 'tailwind-merge';
 	import { cn } from '$lib/utils';
 	import { platform } from '@tauri-apps/plugin-os';
-	import { slide } from 'svelte/transition';
-
-	import MacCloseButton from '$lib/components/window-controls/macos/mac-close.svelte';
-	import MacMinimizeButton from '$lib/components/window-controls/macos/mac-minimize.svelte';
-	import MacMaximizeButton from '$lib/components/window-controls/macos/mac-maximize.svelte';
-
-	import { Button } from '$lib/components/ui/button/index.js';
-	import * as Tooltip from '$lib/components/ui/tooltip/index.js';
-	import { Separator } from '$lib/components/ui/separator/index.js';
-	import * as Popover from '$lib/components/ui/popover';
-	import * as Sheet from '$lib/components/ui/sheet';
-
 	import { Settings, PanelLeft, Sun, Moon } from 'lucide-svelte';
 	import WinMinimizeButton from '$lib/components/window-controls/windows/win-minimize.svelte';
 	import WinMaximizeButton from '$lib/components/window-controls/windows/win-maximize.svelte';
 	import WinCloseButton from '$lib/components/window-controls/windows/win-close.svelte';
-
+	import MacCloseButton from '$lib/components/window-controls/macos/mac-close.svelte';
+	import MacMinimizeButton from '$lib/components/window-controls/macos/mac-minimize.svelte';
+	import MacMaximizeButton from '$lib/components/window-controls/macos/mac-maximize.svelte';
+	import * as Sheet from '$lib/components/ui/sheet';
 	import {
 		leftSideBarSheet,
 		leftSideBarWidth,
 		leftSideBarWidthBeforeCollapse,
 		appMaximized
 	} from '$lib/global-store';
+	import { mode as appColorTheme, setMode } from 'mode-watcher';
 
-	import { toggleMode } from 'mode-watcher';
+	const TITLEBARICONSIZE: number = 20;
 
-
-    const TITLEBARICONSIZE: number = 20; 
-
-	let isHover: boolean = $state(false);
-
-	// let backgroundTitleBar: string = $state($currentThemeTitleMatchBackground ? "bg-background" : "bg-titleBar-background");
-
-	// let solidTitleBar: string = $derived($currentThemeTitleBarSolid ? "bg-opacity-100" : "bg-opacity-90");
-
-	/**
-	 * @type {boolean} whether it's open or not
-	 */
+	let isHover = $state(false);
 	let isSettingsOpen = $state(false);
 
-	function handleSideBarFullWindow() {
+	// is the OS level theme dark? We init it to the system default, but it will update if the user changes it.
+	let osThemeDark = $state(window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+	/**
+	 * * Title bar item theme
+	 */
+	let titleBarItemTheme = $derived(cn(
+		osThemeDark 
+			? ($leftSideBarSheet ? "text-white" : "hover:text-white") 
+			: ($leftSideBarSheet ? "text-black/60" : "hover:text-black/60"),
+		"text-muted-foreground transition-all duration-200"
+	));
+
+	function handleLeftSideBar() {
+
+		// Toggle the sidebar state
+		$leftSideBarSheet = !$leftSideBarSheet;
+
+		// If the sidebar is being opened, set the width to the previous width
 		if ($leftSideBarWidth === 0) {
 			$leftSideBarWidth = $leftSideBarWidthBeforeCollapse;
 			console.log('Sidebar expanded to:', $leftSideBarWidth);
@@ -53,20 +51,28 @@
 		}
 	}
 
-	function handleSideBarFullWindowCollapse() {
-		if ($leftSideBarWidth === 0) {
-			$leftSideBarSheet = true;
-		}
-	}
+	$effect(() => {
 
-	function handleSideBarHalfWindow() {
-		console.log('entered icon');
-		$leftSideBarSheet = true;
-	}
+		// Listen for changes in the user's color scheme preference
+		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+		// Update osThemeDark when the media query matches
+		const listener = (event: MediaQueryListEvent) => {
+			osThemeDark = event.matches;
+		};
+
+		// Initial check
+		mediaQuery.addEventListener('change', listener);
+
+		// Cleanup listener on component destroy
+		return () => mediaQuery.removeEventListener('change', listener);
+	});
+
+	
 </script>
 
 <div
-	class={cn('grid h-12 max-h-12 w-full grid-cols-3 grid-rows-1 items-center justify-between px-4 bg-transparent')}
+	class={cn('grid h-12 max-h-12 w-full grid-cols-3 grid-rows-1 items-center justify-between px-4')}
 	style="backdrop-filter: blur(20px)"
 	data-tauri-drag-region
 >
@@ -101,31 +107,18 @@
 		>
 			<button
 				class={cn(
-					' bg-gradient-to-br from-red-500 via-orange-500 to-yellow-800 bg-clip-text text-transparent transition-all duration-100 ease-in-out hover:from-red-300 hover:via-orange-400 hover:to-amber-200'
+					'bg-gradient-to-br from-red-500 via-orange-500 to-yellow-800 bg-clip-text text-transparent transition-all duration-500 ease-in-out hover:from-red-300 hover:via-orange-400 hover:to-amber-200'
 				)}
 			>
 				TEMPLATE
 			</button>
 		</a>
 
-		<!--before reaching breakpoint-->
 		<button
-			class={cn('p-0 text-muted-foreground hover:text-primary', 'md:hidden lg:grid')}
-			onclick={handleSideBarFullWindow}
+			class={cn(titleBarItemTheme)}
+			onclick={handleLeftSideBar}
 		>
-			<PanelLeft class="transition-all ease-in-out hover:text-primary" />
-		</button>
-
-		<!--When the breakpoint is hit-->
-		<button
-			onmouseenter={handleSideBarHalfWindow}
-			class={cn(
-				'p-0 text-muted-foreground hover:bg-transparent hover:text-primary',
-				'md:grid lg:hidden'
-			)}
-			onclick={handleSideBarFullWindow}
-		>
-			<PanelLeft class={cn('transition-all ease-in-out hover:text-primary')} />
+			<PanelLeft size={TITLEBARICONSIZE} class={cn(titleBarItemTheme)} />
 		</button>
 	</div>
 
@@ -137,16 +130,19 @@
 	<!-- Right Section -->
 	<div class={cn('flex items-center justify-end gap-4')} data-tauri-drag-region>
 		<!--Dark and Light-->
-        <button onclick={toggleMode} class={cn("relative flex items-center justify-center rounded-full p-0 text-muted-foreground hover:bg-transparent hover:text-primary")}>
-            <Sun
-              size={TITLEBARICONSIZE}
-              class={cn("transition-all duration-300 dark:rotate-90 opacity-100 dark:opacity-0 ")}
-            />
-            <Moon
-              size={TITLEBARICONSIZE}
-              class={cn("absolute transition-all duration-300 rotate-90 dark:rotate-0 opacity-0 dark:opacity-100")}
-            />
-          </button>
+		{#if $appColorTheme === 'dark'}
+			<button class={cn(titleBarItemTheme)} onclick={() => setMode('light')}>
+				<Moon
+					size={TITLEBARICONSIZE}
+				/>
+			</button>	
+		{:else}
+			<button class={cn(titleBarItemTheme)} onclick={() => setMode('dark')}>
+				<Sun
+					size={TITLEBARICONSIZE}
+				/>
+			</button>
+		{/if}
 
 		<!-- Settings -->
 		<Sheet.Root bind:open={isSettingsOpen}>
@@ -155,15 +151,14 @@
 				disabled={isSettingsOpen}
 			>
 				<button class="p-0 text-muted-foreground hover:bg-transparent">
-					<Settings size={TITLEBARICONSIZE} class=" transition-all ease-in-out hover:text-primary" />
+					<Settings size={TITLEBARICONSIZE} class={cn("transition-all ease-in-out hover:text-primary", titleBarItemTheme)} />
 				</button>
 			</Sheet.Trigger>
 
-			<!--mt-12 and pb-12 are necessary to offset it. bg-transparent necessary to preserve rounded screen corners-->
 			<Sheet.Content
 				side="right"
 				class={cn(
-					'mt-12 overflow-hidden rounded-br-md border-0 bg-transparent px-0 pb-12 pt-0 focus:outline-none focus:ring-0 '
+					'mt-12 overflow-hidden rounded-br-md border-0 bg-transparent px-0 pb-12 pt-0 focus:outline-none focus:ring-0'
 				)}
 				overlayClass="bg-background/10 duration-200 fixed inset-0 z-50 backdrop-blur-[2px]"
 			>

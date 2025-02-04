@@ -24,7 +24,7 @@ pub fn run() {
 
             #[cfg(target_os = "windows")]
             apply_mica(&window, None)
-                .expect("Unsupported platform! 'apply_blur' is only supported on Windows");
+                .expect("Unsupported platform! 'apply_mica' is only supported on Windows");
 
             window.minimize().unwrap();
             window.unminimize().unwrap();
