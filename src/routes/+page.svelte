@@ -1,9 +1,5 @@
 <script lang="ts">
-    let test = $state(false)
-
-    import { invoke } from '@tauri-apps/api/core';
-
-    
+	import { leftSideBarSheet } from '$lib/global-store';
 
 
 </script>
@@ -11,5 +7,4 @@
 
 <div class="p-2">
     Test Content
-
 </div>
