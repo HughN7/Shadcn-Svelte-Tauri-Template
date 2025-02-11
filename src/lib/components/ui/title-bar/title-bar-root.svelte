@@ -8,7 +8,6 @@
 	import MacCloseButton from '$lib/components/window-controls/macos/mac-close.svelte';
 	import MacMinimizeButton from '$lib/components/window-controls/macos/mac-minimize.svelte';
 	import MacMaximizeButton from '$lib/components/window-controls/macos/mac-maximize.svelte';
-	import * as Sheet from '$lib/components/ui/sheet';
 	import {
 		leftSideBarSheet,
 		leftSideBarWidth,
@@ -20,7 +19,6 @@
 	const TITLEBARICONSIZE: number = 20;
 
 	let isHover = $state(false);
-	let isSettingsOpen = $state(false);
 
 	// is the OS level theme dark? We init it to the system default, but it will update if the user changes it.
 	let osThemeDark = $state(window.matchMedia('(prefers-color-scheme: dark)').matches);
@@ -144,26 +142,9 @@
 		{/if}
 
 		<!-- Settings -->
-		<Sheet.Root bind:open={isSettingsOpen}>
-			<Sheet.Trigger
-				class="flex items-center focus:outline-none focus:ring-0"
-				disabled={isSettingsOpen}
-			>
-				<button class="p-0 text-muted-foreground hover:bg-transparent">
-					<Settings size={TITLEBARICONSIZE} class={cn("transition-all ease-in-out hover:text-primary", titleBarItemTheme)} />
-				</button>
-			</Sheet.Trigger>
-
-			<Sheet.Content
-				side="right"
-				class={cn(
-					'mt-12 overflow-hidden rounded-br-md border-0 bg-transparent px-0 pb-12 pt-0 focus:outline-none focus:ring-0'
-				)}
-				overlayClass="bg-background/10 duration-200 fixed inset-0 z-50 backdrop-blur-[2px]"
-			>
-				Stuff
-			</Sheet.Content>
-		</Sheet.Root>
+		<button class="p-0 text-muted-foreground hover:bg-transparent">
+			<Settings size={TITLEBARICONSIZE} class={cn("transition-all ease-in-out hover:text-primary", titleBarItemTheme)} />
+		</button>
 
 		<!--Window Control Buttons on Windows OS-->
 		{#if platform() === 'windows'}

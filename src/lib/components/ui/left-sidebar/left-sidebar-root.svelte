@@ -10,7 +10,6 @@
 	import { cn } from '$lib/utils';
 	import { fly, slide } from 'svelte/transition';
 
-	import * as Sheet from '$lib/components/ui/sheet/index.js';
 	import LeftSidebarContents from './left-sidebar-contents.svelte';
 
 	function handleMouseMove(event: MouseEvent) {
@@ -39,11 +38,6 @@
 	}
 
 	function handleMouseEnter() {
-		// console.log('Mouse Enter');
-
-		// getCurrentWindow().isMaximized().then((result: boolean)=>{
-		//     console.log("maximized: ", result)
-		// })
 		$leftSideBarSheet = true;
 	}
 
@@ -59,6 +53,7 @@
 	}
 
 </script>
+
 
 <!--Side bar that's expanded / fixed-->
 {#if $appWidth >= MIDBREAKPOINTPX && $leftSideBarWidth > 0}
@@ -95,16 +90,8 @@
 	></button>
 {/if}
 
-<!--Side bar that's collapsed-->
-<!-- <Sheet.Root bind:open={$leftSideBarSheet}>
-	<Sheet.Content
-		side={'left'}
-		class={cn(' mt-12 w-72 rounded-bl-md border-0 bg-transparent px-0 pb-12 pt-0')}
-	>
-		<LeftSidebarContents />
-	</Sheet.Content>
-</Sheet.Root> -->
 
+<!--Slide out sidebar when window is small-->
 {#if $appWidth < MIDBREAKPOINTPX && $leftSideBarSheet}
 	<aside class={cn("fixed inset-0 z-50 mt-12 flex")}>
 		
