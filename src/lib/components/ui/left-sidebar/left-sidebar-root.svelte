@@ -1,8 +1,8 @@
 <script lang="ts">
     import {
         appWidth,
-        leftSideBarHandleDrag,
-        leftSideBarSheet, // Using the single sheet variable
+        leftSideBarDragHandle,
+        leftSideBarSheet,
         leftSideBarWidth,
         leftSideBarWidthBeforeCollapse,
         MIDBREAKPOINTPX,
@@ -13,7 +13,7 @@
     import LeftSidebarContents from './left-sidebar-contents.svelte';
 
     function handleMouseMove(event: MouseEvent) {
-        if ($leftSideBarHandleDrag) {
+        if ($leftSideBarDragHandle) {
             if (event.clientX < 90) {
                 $leftSideBarWidth = 0;
                 $leftSideBarWidthBeforeCollapse = 220;
@@ -29,22 +29,17 @@
             return;
         }
 
-        $leftSideBarHandleDrag = true;
+        $leftSideBarDragHandle = true;
         document.addEventListener('mousemove', handleMouseMove);
         document.addEventListener('mouseup', handleMouseUp);
     }
 
 
     function handleTriggerleftSideBarSheet(){
-        if ($appWidth >= MIDBREAKPOINTPX && $leftSideBarWidth === 0) {
-            $leftSideBarSheet = true // For large window
-            return;
-        }
-
-        if($appWidth < MIDBREAKPOINTPX){
-            $leftSideBarSheet = true // For small window
-        }
-    }
+		if (($appWidth >= MIDBREAKPOINTPX && $leftSideBarWidth === 0) || ($appWidth < MIDBREAKPOINTPX)) {
+			$leftSideBarSheet = true
+		}
+	}
 
     function handleExitSideBarSheet() {
         $leftSideBarSheet = false // Single handler for both window sizes
@@ -59,7 +54,7 @@
 
         document.removeEventListener('mousemove', handleMouseMove);
         document.removeEventListener('mouseup', handleMouseUp);
-        $leftSideBarHandleDrag = false;
+        $leftSideBarDragHandle = false;
     }
 
 </script>
@@ -77,7 +72,7 @@
         <button
             aria-label="left-sidebar drag-handle"
             class={cn(
-                'w-1 cursor-col-resize transition-all duration-300 ease-in-out',
+                'w-1 transition-all duration-300 ease-in-out',
                 $leftSideBarWidth !== 0 ? 'hover:bg-primary' : ''
             )}
             onmousedown={handleMouseDown}
@@ -87,7 +82,7 @@
 
 <button
     aria-label="left-sidebar hover-trigger-large-window"
-    class={cn($appWidth >= MIDBREAKPOINTPX && $leftSideBarWidth > 0 ? 'w-0' : 'w-[9px]', "my-2 cursor-col-resize rounded-xl transition-all duration-300 ease-in-out")}
+    class={cn($appWidth >= MIDBREAKPOINTPX && $leftSideBarWidth > 0 ? 'w-0' : 'w-[9px]', "my-2 rounded-xl transition-all duration-300 ease-in-out")}
     onmouseenter={handleTriggerleftSideBarSheet}
 ></button>
 

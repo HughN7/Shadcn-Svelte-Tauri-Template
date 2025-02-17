@@ -3,7 +3,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import '../app.css';
 	import { getCurrentWindow } from "@tauri-apps/api/window";
-	import { appMaximized, appWidth, leftSideBarHandleDrag, leftSideBarSheet, leftSideBarWidth, leftSideBarWidthBeforeCollapse, MIDBREAKPOINTPX } from '$lib/global-store';
+	import { appMaximized, appWidth, leftSideBarDragHandle, leftSideBarSheet, leftSideBarWidth, leftSideBarWidthBeforeCollapse, MIDBREAKPOINTPX } from '$lib/global-store';
 	
 	import TitleBarRoot from '$lib/components/ui/title-bar/title-bar-root.svelte';
   
@@ -59,7 +59,7 @@
         <LeftSidebarRoot/>
 
         <!--Main Contents-->
-        <main class={cn("mt-2 mb-[8px] flex flex-1 rounded-sm border bg-accent/20 md:mr-[9px] overflow-hidden", $leftSideBarHandleDrag ? "select-none" : "")}>
+        <main class={cn("mt-2 mb-[8px] flex flex-1 rounded-sm border bg-accent/20 md:mr-[9px] overflow-hidden", $leftSideBarDragHandle ? "select-none" : "")}>
             {@render children()}
         </main>
     </div>
