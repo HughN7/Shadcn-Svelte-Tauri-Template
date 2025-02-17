@@ -9,10 +9,16 @@
 	import MacMinimizeButton from '$lib/components/window-controls/macos/mac-minimize.svelte';
 	import MacMaximizeButton from '$lib/components/window-controls/macos/mac-maximize.svelte';
 	import {
-		leftSideBarSheet,
+		leftSideBarSheetSmallWindow,
 		leftSideBarWidth,
 		leftSideBarWidthBeforeCollapse,
-		appMaximized
+		appMaximized,
+
+		MIDBREAKPOINTPX,
+
+		appWidth
+
+
 	} from '$lib/global-store';
 	import { mode as appColorTheme, setMode } from 'mode-watcher';
 
@@ -28,24 +34,26 @@
 	 */
 	let titleBarItemTheme = $derived(cn(
 		osThemeDark 
-			? ($leftSideBarSheet ? "text-white" : "hover:text-white") 
-			: ($leftSideBarSheet ? "text-black/60" : "hover:text-black/60"),
+			? ($leftSideBarSheetSmallWindow ? "text-white" : "hover:text-white") 
+			: ($leftSideBarSheetSmallWindow ? "text-black/60" : "hover:text-black/60"),
 		"text-muted-foreground transition-all duration-200"
 	));
 
 	function handleLeftSideBar() {
 
-		// Toggle the sidebar state
-		$leftSideBarSheet = !$leftSideBarSheet;
-
-		// If the sidebar is being opened, set the width to the previous width
-		if ($leftSideBarWidth === 0) {
-			$leftSideBarWidth = $leftSideBarWidthBeforeCollapse;
-			console.log('Sidebar expanded to:', $leftSideBarWidth);
-		} else if ($leftSideBarWidth > 0) {
-			$leftSideBarWidthBeforeCollapse = $leftSideBarWidth;
-			$leftSideBarWidth = 0;
-			console.log('Sidebar collapsed.');
+		if ($appWidth < MIDBREAKPOINTPX){
+			// Toggle the sidebar state
+			$leftSideBarSheetSmallWindow = !$leftSideBarSheetSmallWindow;
+		}else{
+			// If the sidebar is being opened, set the width to the previous width
+			if ($leftSideBarWidth === 0) {
+				$leftSideBarWidth = $leftSideBarWidthBeforeCollapse;
+				console.log('Sidebar expanded to:', $leftSideBarWidth);
+			} else if ($leftSideBarWidth > 0) {
+				$leftSideBarWidthBeforeCollapse = $leftSideBarWidth;
+				$leftSideBarWidth = 0;
+				console.log('Sidebar collapsed.');
+			}
 		}
 	}
 

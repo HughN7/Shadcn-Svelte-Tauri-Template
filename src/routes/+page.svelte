@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { leftSideBarSheet } from '$lib/global-store';
 
 
 </script>

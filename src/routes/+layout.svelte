@@ -3,7 +3,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import '../app.css';
 	import { getCurrentWindow } from "@tauri-apps/api/window";
-	import { appMaximized, appWidth, leftSideBarHandleDrag, leftSideBarSheet, leftSideBarWidth, leftSideBarWidthBeforeCollapse, MIDBREAKPOINTPX } from '$lib/global-store';
+	import { appMaximized, appWidth, leftSideBarHandleDrag, leftSideBarSheetSmallWindow, leftSideBarWidth, leftSideBarWidthBeforeCollapse, MIDBREAKPOINTPX } from '$lib/global-store';
 	
 	import TitleBarRoot from '$lib/components/ui/title-bar/title-bar-root.svelte';
   
@@ -41,7 +41,7 @@
 
     $effect(() => {
         if ($leftSideBarWidth > 0 && $appWidth >= MIDBREAKPOINTPX) {
-            $leftSideBarSheet = false;
+            $leftSideBarSheetSmallWindow = false;
         }
     });
 
