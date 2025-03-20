@@ -10,7 +10,7 @@
 
 	const snapLayoutHoverTimeout = new ResettableTimeout(async () => {
 		await triggerSnapLayout();
-	}, 500);
+	}, 800);
 
 	async function triggerSnapLayout() {
 		try {

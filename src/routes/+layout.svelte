@@ -49,7 +49,7 @@
 
 <ModeWatcher defaultMode="dark" />
 
-<div class="flex h-screen flex-col overflow-hidden" id="main-area">
+<div class="h-screen w-screen overflow-hidden" id="main-area">
     <TitleBarRoot />
 
     <!--Everything under the title bar-->
