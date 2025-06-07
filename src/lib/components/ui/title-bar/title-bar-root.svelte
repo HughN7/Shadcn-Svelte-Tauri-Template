@@ -133,10 +133,7 @@
 	* If you want to add a search bar, you can do it here.
 	* If you want to add tabs, you can do it here.
 	* 
-	* Example:
 	* Implementing tabs here as an example:
-	* 
-	*	
 	-->
 	<div class="size-full overflow-hidden mx-2" data-tauri-drag-region>
 
