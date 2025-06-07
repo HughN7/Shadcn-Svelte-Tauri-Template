@@ -97,6 +97,6 @@ Only let the side bar slide out when the window is small OR (when the window is 
             out:fly={{ x: -300, duration: 500,  opacity: 1 }} class="w-72">
             <LeftSidebarContents />
         </div>
-        <button onclick={handleExitSideBarSheet} class="flex flex-grow" aria-label="Close sidebar"></button>
+        <button onclick={handleExitSideBarSheet} class="flex grow" aria-label="Close sidebar"></button>
     </aside>
 {/if}

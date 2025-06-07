@@ -110,7 +110,7 @@
 		>
 			<button
 				class={cn(
-					'bg-gradient-to-br from-red-500 via-orange-500 to-yellow-800 bg-clip-text text-transparent transition-all duration-500 ease-in-out hover:from-red-300 hover:via-orange-400 hover:to-amber-200'
+					'bg-linear-to-br from-red-500 via-orange-500 to-yellow-800 bg-clip-text text-transparent transition-all duration-500 ease-in-out hover:from-red-300 hover:via-orange-400 hover:to-amber-200'
 				)}
 			>
 				TEMPLATE
