@@ -24,7 +24,7 @@ pub fn run() {
                 .expect("Unsupported platform! 'apply_vibrancy' is only supported on macOS");
 
             #[cfg(target_os = "windows")]
-            apply_mica(&window, None)
+            apply_acrylic(&window, None)
                 .expect("Unsupported platform! 'apply_mica' is only supported on Windows");
 
             window.minimize().unwrap();

@@ -20,7 +20,8 @@
 
 
 	} from '$lib/global-store';
-	import { mode as appColorTheme, setMode } from 'mode-watcher';
+	import { mode, setMode } from 'mode-watcher';
+	import { get } from 'svelte/store';
 
 	const TITLEBARICONSIZE: number = 20;
 
@@ -36,7 +37,7 @@
 		osThemeDark 
 			? ($leftSideBarSheet ? "text-white" : "hover:text-white") 
 			: ($leftSideBarSheet ? "text-black/60" : "hover:text-black/60"),
-		"text-muted-foreground transition-all duration-200"
+		"text-muted-foreground transition-all duration-200 cursor-pointer"
 	));
 
 	function handleLeftSideBar() {
@@ -76,7 +77,7 @@
 </script>
 
 <div
-	class={cn('grid h-12 max-h-12 w-full grid-cols-3 grid-rows-1 items-center justify-between', platform() === 'macos' ? 'px-3' : 'pl-3')}
+	class={cn('flex justify-between h-12 max-h-12 w-full items-center', platform() === 'macos' ? 'px-3' : 'pl-3')}
 	data-tauri-drag-region
 >
 	<!-- Left Section -->
@@ -102,7 +103,7 @@
 			<MacMaximizeButton bind:isHover />
 		</div>
 
-		<a
+		<!-- <a
 			class={cn(
 				'group flex self-center align-middle font-sans text-xl font-semibold drop-shadow-lg'
 			)}
@@ -115,7 +116,7 @@
 			>
 				TEMPLATE
 			</button>
-		</a>
+		</a> -->
 
 		<button
 			class={cn(titleBarItemTheme)}
@@ -125,15 +126,25 @@
 		</button>
 	</div>
 
-	<!--Mid section-->
-	<div>
-		<!--Search Bar, Tabs, etc. here-->
+	<!--
+	* This is the mid section of the title bar.
+	* It can be used for search bars, tabs, or any other content that needs to be centered.
+	* 
+	* If you want to add a search bar, you can do it here.
+	* If you want to add tabs, you can do it here.
+	* 
+	* Example:
+	* Implementing tabs here as an example:
+	* 
+	*	
+	-->
+	<div class="size-full overflow-hidden mx-2" data-tauri-drag-region>
+
 	</div>
 
 	<!-- Right Section -->
 	<div class={cn('flex items-center justify-end gap-4')} data-tauri-drag-region>
-		<!--Dark and Light-->
-		{#if $appColorTheme === 'dark'}
+		{#if mode.current === 'dark'}
 			<button class={cn(titleBarItemTheme)} onclick={() => setMode('light')}>
 				<Moon
 					size={TITLEBARICONSIZE}
