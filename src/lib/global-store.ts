@@ -12,3 +12,11 @@ export const leftSideBarDragHandle = writable<boolean>(false)
 
 //macOS specific
 export const appMaximized = persisted<boolean>('app-fullscreened', false)
+
+export const tabs = persisted<{ id: number; title: string }[]>('tabs', [
+	{ id: 1, title: "Tab 1" },
+	{ id: 2, title: "Tab 2" },
+	{ id: 3, title: "Tab 3" }
+]);
+
+export const activeTab = persisted<number>('active-tab', 1);
