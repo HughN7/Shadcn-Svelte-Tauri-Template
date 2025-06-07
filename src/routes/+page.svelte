@@ -1,9 +1,8 @@
 <script lang="ts">
-	import DraggableTabs from "$lib/components/tabs/draggable-tabs.svelte";
 	import { tabs, activeTab } from "$lib/global-store";
 </script>
 
-<DraggableTabs />
+<!-- Tabs are now in the title bar -->
 
 <div class="p-2">
 	Active Tab: {$activeTab}

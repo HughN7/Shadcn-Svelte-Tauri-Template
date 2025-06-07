@@ -22,6 +22,7 @@
 	} from '$lib/global-store';
 	import { mode, setMode } from 'mode-watcher';
 	import { get } from 'svelte/store';
+	import DraggableTabs from "$lib/components/tabs/draggable-tabs.svelte";
 
 	const TITLEBARICONSIZE: number = 20;
 
@@ -126,17 +127,11 @@
 		</button>
 	</div>
 
-	<!--
-	* This is the mid section of the title bar.
-	* It can be used for search bars, tabs, or any other content that needs to be centered.
-	* 
-	* If you want to add a search bar, you can do it here.
-	* If you want to add tabs, you can do it here.
-	* 
-	* Implementing tabs here as an example:
+	<!-- Mid Section: Tabs are rendered here 
+		Replace this with search bar or other components as needed 
 	-->
-	<div class="size-full overflow-hidden mx-2" data-tauri-drag-region>
-
+	<div class="size-full overflow-hidden mx-2 my-4 pt-2 flex " data-tauri-drag-region>
+		<DraggableTabs />
 	</div>
 
 	<!-- Right Section -->

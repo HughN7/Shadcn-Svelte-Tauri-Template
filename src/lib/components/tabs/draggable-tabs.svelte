@@ -15,19 +15,20 @@
 </script>
 
 <div
-	use:dndzone={{ items: $tabs, flipDurationMs, dragDisabled: false, dropFromOthersDisabled: true }}
+	use:dndzone={{ items: $tabs, flipDurationMs, dragDisabled: false, dropFromOthersDisabled: true, dropTargetStyle: { backgroundColor: 'transparent' } }}
 	onconsider={handleDnd}
 	onfinalize={handleDnd}
-	class="flex flex-row gap-1 select-none"
+	class="flex flex-row gap-1 select-none bg-transparent"
 >
 	{#each $tabs as tab (tab.id)}
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<div
-			class="px-4 py-2 rounded-t cursor-pointer transition-colors"
-			class:bg-primary={tab.id === $activeTab}
-			class:text-primary-foreground={tab.id === $activeTab}
-			class:bg-muted={tab.id !== $activeTab}
+			class="px-4 py-2 rounded-t-lg cursor-pointer transition-colors"
+			class:bg-background={tab.id === $activeTab}
+			class:text-primary={tab.id === $activeTab}
+			class:bg-transparent={tab.id !== $activeTab}
+			class:hover:bg-accent={tab.id !== $activeTab}
 			onclick={() => handleTabSelect(tab.id)}
 			animate:flip={{ duration: flipDurationMs }}
 		>
