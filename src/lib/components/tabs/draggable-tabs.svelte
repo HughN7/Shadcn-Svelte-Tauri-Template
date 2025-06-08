@@ -9,6 +9,31 @@
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 	}
+	.scroll-btn {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		width: 1.75rem;
+		z-index: 10;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: var(--background, rgba(255,255,255,0.8));
+		transition: background 0.2s;
+	}
+	.scroll-btn-left {
+		left: 0;
+		border-top-left-radius: 0.5rem;
+		border-bottom-left-radius: 0.5rem;
+	}
+	.scroll-btn-right {
+		right: 2.5rem; /* leave space for + button */
+		border-top-right-radius: 0.5rem;
+		border-bottom-right-radius: 0.5rem;
+	}
+	.tabs-parent {
+		position: relative;
+	}
 </style>
 
 <script lang="ts">
@@ -92,15 +117,27 @@
 	});
 </script>
 
-<div class="flex items-center w-fit overflow-hidden">
+<div class="tabs-parent flex items-center w-fit overflow-hidden">
+	{#if showLeft}
+		<button
+			class="scroll-btn scroll-btn-left hover:bg-accent"
+			onclick={scrollLeftBy}
+			aria-label="Scroll tabs left"
+			style="cursor: pointer"
+		>
+			&#8592;
+		</button>
+	{/if}
+
 	<!-- Tabs scroll area -->
 	<div
-		class="no-scrollbar flex flex-row gap-1 select-none bg-transparent overflow-x-auto whitespace-nowrap flex-grow min-w-0"
+		class="no-scrollbar flex flex-row gap-1 select-none bg-transparent overflow-x-auto whitespace-nowrap flex-grow min-w-0 relative"
 		style="scroll-behavior: smooth;"
 		use:dndzone={{ items: $tabs, flipDurationMs, dragDisabled: false, dropFromOthersDisabled: true, dropTargetStyle: { backgroundColor: 'transparent' } }}
 		onconsider={handleDnd}
 		onfinalize={handleDnd}
 		data-tauri-drag-region
+		bind:this={scrollEl}
 	>
 		{#each $tabs as tab (tab.id)}
 			<!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -137,4 +174,14 @@
 	>
 		+
 	</button>
+	{#if showRight}
+		<button
+			class="scroll-btn scroll-btn-right hover:bg-accent"
+			onclick={scrollRightBy}
+			aria-label="Scroll tabs right"
+			style="cursor: pointer"
+		>
+			&#8594;
+		</button>
+	{/if}
 </div>
