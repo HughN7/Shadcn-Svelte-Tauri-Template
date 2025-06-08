@@ -13,6 +13,14 @@ export const leftSideBarDragHandle = writable<boolean>(false)
 //macOS specific
 export const appMaximized = persisted<boolean>('app-fullscreened', false)
 
+//Tabs Management
+/**
+ * This store manages the tabs in the application.
+ * Each tab is represented by an object with an `id` and a `title`.
+ * Ideally to expand on this, you could add more properties like `url`, `icon`, etc.
+ * You'll likely need to basically treat the array of objects as your single source of truth for tabs 
+ * and the page content displayed in each tab. so a more complex tab.
+ */
 export const tabs = persisted<{ id: number; title: string }[]>('tabs', [
 	{ id: 1, title: "Tab 1" },
 	{ id: 2, title: "Tab 2" },
