@@ -9,27 +9,23 @@
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 	}
-	.scroll-btn {
-		position: absolute;
-		top: 0;
-		bottom: 0;
+	.scroll-btn-inline {
 		width: 1.75rem;
-		z-index: 10;
+		height: 2.25rem;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		background: var(--background, rgba(255,255,255,0.8));
-		transition: background 0.2s;
+		border-radius: 0.5rem;
+		transition: background 0.2s, color 0.2s, opacity 0.2s;
+		margin-right: 0.25rem;
+		margin-left: 0.25rem;
 	}
-	.scroll-btn-left {
-		left: 0;
-		border-top-left-radius: 0.5rem;
-		border-bottom-left-radius: 0.5rem;
-	}
-	.scroll-btn-right {
-		right: 2.5rem; /* leave space for + button */
-		border-top-right-radius: 0.5rem;
-		border-bottom-right-radius: 0.5rem;
+	.scroll-btn-inline[disabled] {
+		opacity: 0.5;
+		color: var(--muted-foreground, #888);
+		cursor: not-allowed !important;
+		pointer-events: none;
 	}
 	.tabs-parent {
 		position: relative;
@@ -40,6 +36,7 @@
 	import { dndzone } from "svelte-dnd-action";
 	import { flip } from "svelte/animate";
 	import { tabs, activeTab, appWidth } from "$lib/global-store";
+	import { cn } from "$lib/utils";
 
 	const flipDurationMs = 200;
 	let scrollEl = $state<HTMLDivElement | null>(null);
@@ -117,21 +114,25 @@
 	});
 </script>
 
-<div class="tabs-parent flex items-center w-fit overflow-hidden">
-	{#if showLeft}
+<div class={cn("tabs-parent flex items-center w-fit overflow-hidden")}>
+	{#if showLeft || showRight}
+		<!-- Always show both buttons if overflow, but disable if not scrollable -->
 		<button
-			class="scroll-btn scroll-btn-left hover:bg-accent"
+			class={cn("scroll-btn-inline hover:bg-accent")}
 			onclick={scrollLeftBy}
 			aria-label="Scroll tabs left"
 			style="cursor: pointer"
+			disabled={!showLeft}
 		>
 			&#8592;
 		</button>
 	{/if}
 
-	<!-- Tabs scroll area -->
+	<!-- Tabs scroll area: no extra padding needed -->
 	<div
-		class="no-scrollbar flex flex-row gap-1 select-none bg-transparent overflow-x-auto whitespace-nowrap flex-grow min-w-0 relative"
+		class={cn(
+			"no-scrollbar flex flex-row gap-1 select-none bg-transparent overflow-x-auto whitespace-nowrap flex-grow min-w-0 relative"
+		)}
 		style="scroll-behavior: smooth;"
 		use:dndzone={{ items: $tabs, flipDurationMs, dragDisabled: false, dropFromOthersDisabled: true, dropTargetStyle: { backgroundColor: 'transparent' } }}
 		onconsider={handleDnd}
@@ -143,18 +144,18 @@
 			<!-- svelte-ignore a11y_no_static_element_interactions -->
 			<!-- svelte-ignore a11y_click_events_have_key_events -->
 			<div
-				class="px-4 py-2 rounded-t-lg transition-colors items-center gap-2 tab-pointer inline-flex"
-				class:bg-background={tab.id === $activeTab}
-				class:text-primary={tab.id === $activeTab}
-				class:bg-transparent={tab.id !== $activeTab}
-				class:hover:bg-accent={tab.id !== $activeTab}
+				class={cn(
+					"px-4 py-2 rounded-t-lg transition-colors items-center gap-2 tab-pointer inline-flex",
+					tab.id === $activeTab && "bg-background text-primary",
+					tab.id !== $activeTab && "bg-transparent hover:bg-accent"
+				)}
 				onclick={() => handleTabSelect(tab.id)}
 				animate:flip={{ duration: flipDurationMs }}
 			>
 				<span class="select-none">{tab.title}</span>
 				{#if $tabs.length > 1}
 					<button
-						class="ml-1 text-muted-foreground hover:text-destructive px-1 rounded focus:outline-none tab-pointer"
+						class={cn("ml-1 text-muted-foreground hover:text-destructive px-1 rounded focus:outline-none tab-pointer")}
 						onclick={(e) => { e.stopPropagation(); removeTab(tab.id); }}
 						title="Close tab"
 						tabindex="-1"
@@ -165,23 +166,27 @@
 			</div>
 		{/each}
 	</div>
+
+	{#if showLeft || showRight}
+		<!-- Always show both buttons if overflow, but disable if not scrollable -->
+		<button
+			class={cn("scroll-btn-inline hover:bg-accent")}
+			onclick={scrollRightBy}
+			aria-label="Scroll tabs right"
+			style="cursor: pointer"
+			disabled={!showRight}
+		>
+			&#8594;
+		</button>
+	{/if}
+
 	<!-- Add Tab Button (always visible at end) -->
 	<button
-		class="ml-2 px-2 py-1 rounded-t-lg bg-transparent hover:bg-accent text-xl font-bold text-muted-foreground hover:text-primary transition-colors tab-pointer flex-shrink-0"
+		class={cn("ml-2 px-2 py-1 rounded-t-lg bg-transparent hover:bg-accent text-xl font-bold text-muted-foreground hover:text-primary transition-colors tab-pointer flex-shrink-0")}
 		onclick={addTab}
 		title="Add tab"
 		style="cursor: pointer;"
 	>
 		+
 	</button>
-	{#if showRight}
-		<button
-			class="scroll-btn scroll-btn-right hover:bg-accent"
-			onclick={scrollRightBy}
-			aria-label="Scroll tabs right"
-			style="cursor: pointer"
-		>
-			&#8594;
-		</button>
-	{/if}
 </div>
