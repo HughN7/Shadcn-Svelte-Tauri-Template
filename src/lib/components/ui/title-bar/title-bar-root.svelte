@@ -23,6 +23,7 @@
 	import { mode, setMode } from 'mode-watcher';
 	import { get } from 'svelte/store';
 	import DraggableTabs from "$lib/components/tabs/draggable-tabs.svelte";
+	import { goto } from '$app/navigation';
 
 	const TITLEBARICONSIZE: number = 20;
 
@@ -151,7 +152,7 @@
 		{/if}
 
 		<!-- Settings -->
-		<button class="p-0 text-muted-foreground hover:bg-transparent">
+		<button class="p-0 text-muted-foreground hover:bg-transparent" onclick={() => {goto('/settings');}}>
 			<Settings size={TITLEBARICONSIZE} class={cn("transition-all ease-in-out hover:text-primary", titleBarItemTheme)} />
 		</button>
 

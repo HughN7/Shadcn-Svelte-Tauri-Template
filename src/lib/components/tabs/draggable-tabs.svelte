@@ -9,18 +9,6 @@
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 	}
-	.scroll-btn-inline {
-		width: 1.75rem;
-		height: 2.25rem;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		background: var(--background, rgba(255,255,255,0.8));
-		border-radius: 0.5rem;
-		transition: background 0.2s, color 0.2s, opacity 0.2s;
-		margin-right: 0.25rem;
-		margin-left: 0.25rem;
-	}
 	.scroll-btn-inline[disabled] {
 		opacity: 0.5;
 		color: var(--muted-foreground, #888);
@@ -37,6 +25,9 @@
 	import { flip } from "svelte/animate";
 	import { tabs, activeTab, appWidth } from "$lib/global-store";
 	import { cn } from "$lib/utils";
+	import { page } from "$app/state";
+	import { goto } from "$app/navigation";
+	import { ChevronsLeftIcon, ChevronsRightIcon, CirclePlusIcon, PlusIcon } from "lucide-svelte";
 
 	const flipDurationMs = 200;
 	let scrollEl = $state<HTMLDivElement | null>(null);
@@ -91,6 +82,12 @@
 		}
 	}
 
+	function goHomeIfNotHome() {
+		if (page.url.pathname !== "/") {
+			goto("/");
+		}
+	}
+
 	$effect(() => {
 		updateScrollButtons();
 		if (scrollEl) {
@@ -118,13 +115,17 @@
 	{#if showLeft || showRight}
 		<!-- Always show both buttons if overflow, but disable if not scrollable -->
 		<button
-			class={cn("scroll-btn-inline hover:bg-accent")}
+			class={cn(
+				"scroll-btn-inline",
+				"w-7 h-9 flex items-center justify-center rounded-lg transition-colors duration-200 bg-[--background] bg-opacity-80 mx-1",
+				"hover:bg-accent"
+			)}
 			onclick={scrollLeftBy}
 			aria-label="Scroll tabs left"
 			style="cursor: pointer"
 			disabled={!showLeft}
 		>
-			&#8592;
+			<ChevronsLeftIcon/>
 		</button>
 	{/if}
 
@@ -149,7 +150,7 @@
 					tab.id === $activeTab && "bg-background text-primary",
 					tab.id !== $activeTab && "bg-transparent hover:bg-accent"
 				)}
-				onclick={() => handleTabSelect(tab.id)}
+				onclick={() => { handleTabSelect(tab.id); goHomeIfNotHome();}}
 				animate:flip={{ duration: flipDurationMs }}
 			>
 				<span class="select-none">{tab.title}</span>
@@ -170,23 +171,26 @@
 	{#if showLeft || showRight}
 		<!-- Always show both buttons if overflow, but disable if not scrollable -->
 		<button
-			class={cn("scroll-btn-inline hover:bg-accent")}
+			class={cn(
+				"scroll-btn-inline",
+				"w-7 h-9 flex items-center justify-center rounded-lg transition-colors duration-200 bg-[--background] bg-opacity-80 mx-1",
+				"hover:bg-accent"
+			)}
 			onclick={scrollRightBy}
 			aria-label="Scroll tabs right"
 			style="cursor: pointer"
 			disabled={!showRight}
 		>
-			&#8594;
+			<ChevronsRightIcon/>
 		</button>
 	{/if}
 
 	<!-- Add Tab Button (always visible at end) -->
 	<button
-		class={cn("ml-2 px-2 py-1 rounded-t-lg bg-transparent hover:bg-accent text-xl font-bold text-muted-foreground hover:text-primary transition-colors tab-pointer flex-shrink-0")}
+		class={cn("flex ml-2 cursor-pointer self-center rounded-full bg-transparent hover:bg-accent text-xl font-bold text-muted-foreground hover:text-primary transition-colors tab-pointer flex-shrink-0")}
 		onclick={addTab}
 		title="Add tab"
-		style="cursor: pointer;"
 	>
-		+
+		<PlusIcon class="hover:bg-accent rounded-full"/>
 	</button>
 </div>

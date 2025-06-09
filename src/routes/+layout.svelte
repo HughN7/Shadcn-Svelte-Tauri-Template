@@ -27,7 +27,7 @@
     onMount(() => {
         updateWindowStatus(); // Initial check
         window.addEventListener("resize", updateWindowStatus); // Add resize listener
-        document.addEventListener('contextmenu', event => event.preventDefault()); //Prevent global right click
+        //document.addEventListener('contextmenu', event => event.preventDefault()); //Prevent global right click
     });
 
     onDestroy(() => {
